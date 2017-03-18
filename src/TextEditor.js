@@ -9,11 +9,21 @@ class TextEditor extends Component {
     }
 
     handleChange = () => {
-        // ensure symmetry
-        let input_string = '<div>' + this.textArea.innerHTML;
-        console.log(input_string);
+        // ensures symmetry by having each line contained in a div
+        const cleanup_string = (str) => {
+            let pos_first_div = str.indexOf('<div>');
+            if(pos_first_div === -1) {
+                return '<div>' + str + '</div>';
+            }
+            else {
+                return '<div>' + str.substr(0, pos_first_div) + '</div>' + str.substr(pos_first_div);
+            }
+        };
+
+        let formatted_string = cleanup_string(this.textArea.innerHTML);
+        console.log(formatted_string);
         this.setState({
-            value: input_string,
+            value: formatted_string,
         });
     }
 
@@ -22,10 +32,13 @@ class TextEditor extends Component {
         const styles = {
             main: {
                 display: 'flex',
+                overflow: 'auto',
+                width: 900,
+                height: 300,
+                border: '1px solid grey'
             },
             linesDisplay: {
                 width: 30,
-                border: '1px solid black',
                 display: 'flex',
                 flexDirection: 'column',
             },
@@ -35,8 +48,7 @@ class TextEditor extends Component {
             },
             textarea: {
                 width: 900,
-                height: 300,
-                border: '1px solid grey'
+                minHeight: 300,
             }
         };
 

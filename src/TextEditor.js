@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import Paragraph from './Paragraph';
 
 class TextEditor extends Component {
     constructor(props) {
@@ -34,7 +37,7 @@ class TextEditor extends Component {
                 display: 'flex',
                 overflow: 'auto',
                 width: 900,
-                height: 300,
+                minHeight: 300,
                 border: '1px solid grey'
             },
             linesDisplay: {
@@ -49,6 +52,11 @@ class TextEditor extends Component {
             textarea: {
                 width: 900,
                 minHeight: 300,
+            },
+            paragraph: {
+                width: 14,
+                borderLeft: '1px solid black',
+                overflow: 'hidden',
             }
         };
 
@@ -57,8 +65,13 @@ class TextEditor extends Component {
             return <p style={styles.lineNum} key={index}>{++index}<br /></p>;
         });
 
+        const paragraphs_display = this.state.value.split(/<div>/).map((_, index) => {
+            return <Paragraph key={index} />;
+        });
+
         // shave off the extra line number
         num_lines_display.pop();
+        paragraphs_display.pop();
 
         return (
             <div style={styles.main}>
@@ -70,9 +83,12 @@ class TextEditor extends Component {
                      onInput={this.handleChange}
                      ref={(input) => this.textArea = input }
                      style={styles.textarea} />
+                {<div style={styles.paragraph}>
+                    {paragraphs_display}
+                </div>}
             </div>
         );
     }
 }
 
-export default TextEditor;
+export default DragDropContext(HTML5Backend)(TextEditor);

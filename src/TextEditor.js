@@ -7,7 +7,8 @@ class TextEditor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: ''
+            value: '',
+            paragraphs: [],
         };
     }
 
@@ -24,9 +25,28 @@ class TextEditor extends Component {
         };
 
         let formatted_string = cleanup_string(this.textArea.innerHTML);
+
+        const paragraphs_index = formatted_string.split(/<div>/).map((_, index) => {
+            return index;
+        });
         console.log(formatted_string);
         this.setState({
             value: formatted_string,
+            paragraphs: paragraphs_index,
+        });
+    }
+
+    switchParagraphs = (paragraph1, paragraph2) => {
+        let index_1 = this.state.paragraphs.indexOf(paragraph1);
+        let index_2 = this.state.paragraphs.indexOf(paragraph2);
+        this.setState((prevState) => {
+            // swap the two paragraphs
+            const new_paragraphs = prevState.paragraphs;
+            new_paragraphs[index_1] = paragraph2;
+            new_paragraphs[index_2] = paragraph1;
+            return {
+                paragraphs: new_paragraphs
+            }
         });
     }
 
@@ -65,8 +85,8 @@ class TextEditor extends Component {
             return <p style={styles.lineNum} key={index}>{++index}<br /></p>;
         });
 
-        const paragraphs_display = this.state.value.split(/<div>/).map((_, index) => {
-            return <Paragraph key={index} />;
+        const paragraphs_display = this.state.paragraphs.map((value, index) => {
+            return <Paragraph key={index} switch={this.switchParagraphs} index={value} />;
         });
 
         // shave off the extra line number

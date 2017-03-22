@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { ItemTypes } from './Constants';
+import { connect } from 'react-redux';
 import { DragSource, DropTarget } from 'react-dnd';
 import flow from 'lodash/flow';
+import { switchParagraphs } from './actions';
+import { ItemTypes } from './Constants';
 
 // register event listeners for the dragging part
 const paragraphSource = {
@@ -12,7 +14,8 @@ const paragraphSource = {
 
 const paragraphTarget = {
     drop(props, monitor, paragraph) {
-        paragraph.decoratedComponentInstance.props.switch(monitor.getItem().index, props.index);
+        paragraph.decoratedComponentInstance.props.switchParagraphs(
+            monitor.getItem().index, props.index);
     },
     hover(props, monitor, component) {
     }
@@ -50,6 +53,12 @@ Paragraph.propTypes = {
     isOver: PropTypes.bool.isRequired
 };
 
-export default flow(
+const mapDispatchToProps = (dispatch) => {
+    return {
+        switchParagraphs: (para1, para2) => dispatch(switchParagraphs(para1, para2))
+    };
+};
+
+export default connect(null, mapDispatchToProps)(flow(
     DragSource(ItemTypes.PARAGRAPH, paragraphSource, collectSource),
-    DropTarget(ItemTypes.PARAGRAPH, paragraphTarget, collectTarget))(Paragraph);
+    DropTarget(ItemTypes.PARAGRAPH, paragraphTarget, collectTarget))(Paragraph));

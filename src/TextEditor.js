@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import { updateValue, updateParagraphs } from './actions';
 import Paragraph from './Paragraph';
 
 class TextEditor extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: '',
-            paragraphs: [],
-        };
-    }
-
     handleChange = () => {
         // ensures symmetry by having each line contained in a div
         const cleanup_string = (str) => {
@@ -30,24 +24,8 @@ class TextEditor extends Component {
             return index;
         });
         console.log(formatted_string);
-        this.setState({
-            value: formatted_string,
-            paragraphs: paragraphs_index,
-        });
-    }
-
-    switchParagraphs = (paragraph1, paragraph2) => {
-        let index_1 = this.state.paragraphs.indexOf(paragraph1);
-        let index_2 = this.state.paragraphs.indexOf(paragraph2);
-        this.setState((prevState) => {
-            // swap the two paragraphs
-            const new_paragraphs = prevState.paragraphs;
-            new_paragraphs[index_1] = paragraph2;
-            new_paragraphs[index_2] = paragraph1;
-            return {
-                paragraphs: new_paragraphs
-            }
-        });
+        this.props.updateValue(formatted_string);
+        this.props.updateParagraphs(paragraphs_index);
     }
 
     render() {
@@ -81,12 +59,12 @@ class TextEditor extends Component {
         };
 
         // TODO: Does not account for lines longer than width of editor. Make it so.
-        const num_lines_display = this.state.value.split(/<div>/).map((_, index) => {
+        const num_lines_display = this.props.value.split(/<div>/).map((_, index) => {
             return <p style={styles.lineNum} key={index}>{++index}<br /></p>;
         });
 
-        const paragraphs_display = this.state.paragraphs.map((value, index) => {
-            return <Paragraph key={index} switch={this.switchParagraphs} index={value} />;
+        const paragraphs_display = this.props.paragraphs.map((value, index) => {
+            return <Paragraph key={index} index={value} />;
         });
 
         // shave off the extra line number
@@ -99,7 +77,7 @@ class TextEditor extends Component {
                     {num_lines_display}
                 </div>
                 <div contentEditable='true'
-                     value={this.state.value}
+                     value={this.props.value}
                      onInput={this.handleChange}
                      ref={(input) => this.textArea = input }
                      style={styles.textarea} />
@@ -111,4 +89,18 @@ class TextEditor extends Component {
     }
 }
 
-export default DragDropContext(HTML5Backend)(TextEditor);
+const mapStateToProps = (store) => {
+  return {
+    paragraphs: store.paragraphs,
+    value: store.value
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateValue: (value) => dispatch(updateValue(value)),
+        updateParagraphs: (paragraphs) => dispatch(updateParagraphs(paragraphs))
+    }
+};
+
+export default DragDropContext(HTML5Backend)(connect(mapStateToProps, mapDispatchToProps)(TextEditor));

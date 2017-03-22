@@ -43,7 +43,7 @@ class Paragraph extends Component {
                     padding: 1,
                     border: '1px solid green',
                     opacity: isOver ? 0.5 : 1,
-                    backgroundColor: 'red'}}>{this.props.index}</div>));
+                    backgroundColor: 'red'}} />));
     }
 }
 

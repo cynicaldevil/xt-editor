@@ -36,10 +36,10 @@ function collectTarget(connect, monitor) {
 
 class Paragraph extends Component {
     render() {
-        const { connectDragSource, connectDropTarget, isOver } = this.props;
+        const { connectDragSource, connectDropTarget, isOver , length} = this.props;
         return connectDropTarget(connectDragSource(<div style={{
                     width: 10,
-                    height: 14,
+                    height: 14 * length + (4 * (length-1)),
                     padding: 1,
                     border: '1px solid green',
                     opacity: isOver ? 0.5 : 1,

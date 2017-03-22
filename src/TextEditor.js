@@ -66,8 +66,17 @@ class TextEditor extends Component {
             return <p style={styles.lineNum} key={index}>{index}<br /></p>;
         });
 
-        paragraphs.handles = this.props.paragraphs.map((_, index) => {
-            return <Paragraph key={index} index={index} />;
+        paragraphs.handles = this.props.paragraphs.map((content, index) => {
+            let length = 1;
+            let occurences = (content.match(/<br>/g) || []).length;
+            if (occurences > 0 && content !== '<br>') {
+                length = occurences;
+                if ((content.match(/<br><br>/g) || []).length === 0) {
+                    ++length;
+                }
+            }
+            console.log(`index: ${index} length: ${length}`)
+            return <Paragraph key={index} index={index} length={length} />;
         });
 
         return (

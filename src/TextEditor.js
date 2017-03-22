@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -6,26 +7,27 @@ import { updateValue, updateParagraphs } from './actions';
 import Paragraph from './Paragraph';
 
 class TextEditor extends Component {
-    handleChange = () => {
+    handleChange = (evt) => {
         // ensures symmetry by having each line contained in a div
         const cleanup_string = (str) => {
             let pos_first_div = str.indexOf('<div>');
             if(pos_first_div === -1) {
                 return '<div>' + str + '</div>';
             }
-            else {
+            else if(pos_first_div > 0) {
                 return '<div>' + str.substr(0, pos_first_div) + '</div>' + str.substr(pos_first_div);
+            }
+            else {
+                return str;
             }
         };
 
-        let formatted_string = cleanup_string(this.textArea.innerHTML);
-
-        const paragraphs_index = formatted_string.split(/<div>/).map((_, index) => {
-            return index;
+        let formatted_string = cleanup_string(evt.target.value);
+        const paragraphs = formatted_string.split(/<div>/).map((value, index) => {
+            return value.substr(0, value.length - 6);
         });
-        console.log(formatted_string);
-        this.props.updateValue(formatted_string);
-        this.props.updateParagraphs(paragraphs_index);
+        paragraphs.shift();
+        this.props.updateParagraphs(paragraphs);
     }
 
     render() {
@@ -59,30 +61,27 @@ class TextEditor extends Component {
         };
 
         // TODO: Does not account for lines longer than width of editor. Make it so.
-        const num_lines_display = this.props.value.split(/<div>/).map((_, index) => {
-            return <p style={styles.lineNum} key={index}>{++index}<br /></p>;
+        const paragraphs = {};
+        paragraphs.line_num = this.props.paragraphs.map((_, index) => {
+            return <p style={styles.lineNum} key={index}>{index}<br /></p>;
         });
 
-        const paragraphs_display = this.props.paragraphs.map((value, index) => {
-            return <Paragraph key={index} index={value} />;
+        paragraphs.handles = this.props.paragraphs.map((_, index) => {
+            return <Paragraph key={index} index={index} />;
         });
-
-        // shave off the extra line number
-        num_lines_display.pop();
-        paragraphs_display.pop();
 
         return (
             <div style={styles.main}>
                 <div style={styles.linesDisplay}>
-                    {num_lines_display}
+                    {paragraphs.line_num}
                 </div>
-                <div contentEditable='true'
-                     value={this.props.value}
-                     onInput={this.handleChange}
+                <ContentEditable
+                     html={this.props.content}
+                     onChange={this.handleChange}
                      ref={(input) => this.textArea = input }
                      style={styles.textarea} />
                 {<div style={styles.paragraph}>
-                    {paragraphs_display}
+                    {paragraphs.handles}
                 </div>}
             </div>
         );
@@ -92,7 +91,9 @@ class TextEditor extends Component {
 const mapStateToProps = (store) => {
   return {
     paragraphs: store.paragraphs,
-    value: store.value
+    content: store.paragraphs.reduce((str, paragraph) => {
+            return str + `<div>${paragraph}</div>`;
+        }, '')
   }
 };
 

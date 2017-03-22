@@ -4133,6 +4133,10 @@ rc@~1.1.6:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-contenteditable@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-contenteditable/-/react-contenteditable-2.0.2.tgz#0acf68920931c227d1c9c85ae429981920f8fd92"
+
 react-dev-utils@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-0.5.2.tgz#50d0b962d3a94b6c2e8f2011ed6468e4124bc410"

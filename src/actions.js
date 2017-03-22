@@ -1,15 +1,8 @@
-export const switchParagraphs = (para1, para2) => {
+export const switchParagraphs = (index1, index2) => {
     return {
         type: 'SWITCH_PARAGRAPHS',
-        para1,
-        para2
-    }
-};
-
-export const updateValue = (value) => {
-    return {
-        type: 'UPDATE_VALUE',
-        value
+        index1,
+        index2
     }
 };
 

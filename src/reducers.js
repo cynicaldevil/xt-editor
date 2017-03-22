@@ -1,29 +1,24 @@
-const topReducer = (state = { value: '', paragraphs: [] }, action) => {
+const topReducer = (state = { paragraphs: [] }, action) => {
     switch (action.type) {
         case 'SWITCH_PARAGRAPHS' : {
+            const content1 = state.paragraphs[action.index1];
+            const content2 = state.paragraphs[action.index2];
+            const new_paras = state.paragraphs.map((para, index) => {
+                if (index === action.index1) {
+                    return content2;
+                } else if (index === action.index2) {
+                    return content1;
+                } else {
+                    return para;
+                }
+            });
             return {
-                ...state,
-                paragraphs: state.paragraphs.map((value, index) => {
-                    if (value === action.para1) {
-                        return action.para2;
-                    } else if (value === action.para2) {
-                        return action.para1;
-                    } else {
-                        return value;
-                    }
-                }),
-            }
+                paragraphs: new_paras
+            };
         }
         case 'UPDATE_PARAGRAPHS': {
             return {
-                ...state,
                 paragraphs: action.paragraphs
-            }
-        }
-        case 'UPDATE_VALUE': {
-            return {
-                ...state,
-                value: action.value
             }
         }
         default:

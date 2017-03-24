@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { updateValue, updateParagraphs, updateLinks } from './actions';
-import { cleanup_string, find_link } from './utils';
+import { cleanup_string, find_links } from './utils';
 import Paragraph from './Paragraph';
 
 class TextEditor extends Component {
     handleChange = (evt) => {
         let formatted_string = cleanup_string(evt.target.value);
         console.log(formatted_string)
-        find_link(formatted_string);
+        this.props.updateLinks(find_links(formatted_string));
         const paragraphs = formatted_string.split(/<div>/).map((value, index) => {
             return value.substr(0, value.length - 6);
         });
@@ -19,14 +19,21 @@ class TextEditor extends Component {
         this.props.updateParagraphs(paragraphs);
     }
 
+    componentDidMount = () => {
+       this.textArea.htmlEl.focus();
+    }
+
     render() {
         const styles = {
             main: {
+                align: 'center',
                 display: 'flex',
                 overflow: 'auto',
                 width: 900,
                 minHeight: 300,
-                border: '1px solid grey'
+                borderRight: '1px solid #575756',
+                paddingRight: 5,
+                fontSize: 15,
             },
             linesDisplay: {
                 width: 30,
@@ -43,7 +50,6 @@ class TextEditor extends Component {
             },
             paragraph: {
                 width: 14,
-                borderLeft: '1px solid black',
                 overflow: 'hidden',
             }
         };
@@ -68,10 +74,10 @@ class TextEditor extends Component {
 
         return (
             <div style={styles.main}>
-                <div style={styles.linesDisplay}>
+                {/*<div style={styles.linesDisplay}>
                     {paragraphs.line_num}
-                </div>
-                <ContentEditable
+                </div>*/}
+                <ContentEditable autoFocus
                      html={this.props.content}
                      onChange={this.handleChange}
                      ref={(input) => this.textArea = input }

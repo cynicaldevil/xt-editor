@@ -12,7 +12,7 @@ export const cleanup_string = (str) => {
     }
 };
 
-export const find_link = (str) => {
+export const find_links = (str, ) => {
     let i;
     const opening_tag = '&lt;a&gt;';
     const closing_tag = '&lt;/a&gt;'
@@ -32,9 +32,9 @@ export const find_link = (str) => {
                 compare = opening_tag;
                 length_compare = compare.length;
                 links.push(str.substring(start_index, i));
-                this.props.updateLinks(links);
                 console.log(str.substring(start_index, i));
             }
         }
     }
+    return links;
 };

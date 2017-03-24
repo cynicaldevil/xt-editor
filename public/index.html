@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Text Editor</title>
   </head>
-  <body>
+  <style>
+    div:focus {
+        outline: none;
+    }
+    *::selection {
+      background: rgba(238, 238, 239, 0.3);
+    }
+  </style>
+  <body style="background-color: #222;">
     <div id="root"></div>
   </body>
 </html>

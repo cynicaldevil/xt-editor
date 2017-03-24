@@ -39,11 +39,11 @@ class Paragraph extends Component {
         const { connectDragSource, connectDropTarget, isOver , length} = this.props;
         return connectDropTarget(connectDragSource(<div style={{
                     width: 10,
-                    height: 14 * length + (4 * (length-1)),
+                    height: length === 1 ? 14 : (17 * length) - 4,
                     padding: 1,
-                    border: '1px solid green',
+                    margin: 1,
                     opacity: isOver ? 0.5 : 1,
-                    backgroundColor: 'red'}} />));
+                    backgroundColor: '#505050'}} />));
     }
 }
 

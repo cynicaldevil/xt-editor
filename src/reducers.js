@@ -1,4 +1,4 @@
-const topReducer = (state = { paragraphs: [] }, action) => {
+const topReducer = (state = { paragraphs: [], links: [] }, action) => {
     switch (action.type) {
         case 'SWITCH_PARAGRAPHS' : {
             const content1 = state.paragraphs[action.index1];
@@ -13,12 +13,20 @@ const topReducer = (state = { paragraphs: [] }, action) => {
                 }
             });
             return {
+                ...state,
                 paragraphs: new_paras
             };
         }
         case 'UPDATE_PARAGRAPHS': {
             return {
+                ...state,
                 paragraphs: action.paragraphs
+            }
+        }
+        case 'UPDATE_LINKS': {
+            return {
+                ...state,
+                links: action.links
             }
         }
         default:

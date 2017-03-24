@@ -12,3 +12,10 @@ export const updateParagraphs = (paragraphs) => {
         paragraphs
     }
 };
+
+export const updateLinks = (links) => {
+    return {
+        type: 'UPDATE_LINKS',
+        links
+    }
+}

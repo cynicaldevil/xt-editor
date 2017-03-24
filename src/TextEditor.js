@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { updateValue, updateParagraphs } from './actions';
+import { updateValue, updateParagraphs, updateLinks } from './actions';
 import Paragraph from './Paragraph';
 
 class TextEditor extends Component {
@@ -22,7 +22,36 @@ class TextEditor extends Component {
             }
         };
 
+        const find_link = (str) => {
+            let i;
+            const opening_tag = '&lt;a&gt;';
+            const closing_tag = '&lt;/a&gt;'
+            let compare = opening_tag;
+            let length_compare = 9;
+            let start_index;
+            let links = [];
+
+            for(i = 0; i < str.length; i++) {
+                let substr = str.substring(i, i + length_compare);
+                if(substr === compare) {
+                    if (compare === opening_tag) {
+                        start_index = i + compare.length;
+                        compare = closing_tag;
+                        length_compare = compare.length;
+                    } else {
+                        compare = opening_tag;
+                        length_compare = compare.length;
+                        links.push(str.substring(start_index, i));
+                        this.props.updateLinks(links);
+                        console.log(str.substring(start_index, i));
+                    }
+                }
+            }
+        };
+
         let formatted_string = cleanup_string(evt.target.value);
+        console.log(formatted_string)
+        find_link(formatted_string);
         const paragraphs = formatted_string.split(/<div>/).map((value, index) => {
             return value.substr(0, value.length - 6);
         });
@@ -75,7 +104,6 @@ class TextEditor extends Component {
                     ++length;
                 }
             }
-            console.log(`index: ${index} length: ${length}`)
             return <Paragraph key={index} index={index} length={length} />;
         });
 
@@ -109,7 +137,8 @@ const mapStateToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateValue: (value) => dispatch(updateValue(value)),
-        updateParagraphs: (paragraphs) => dispatch(updateParagraphs(paragraphs))
+        updateParagraphs: (paragraphs) => dispatch(updateParagraphs(paragraphs)),
+        updateLinks: (links) => dispatch(updateLinks(links))
     }
 };
 

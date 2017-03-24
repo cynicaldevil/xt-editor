@@ -13,9 +13,9 @@ export const updateParagraphs = (paragraphs) => {
     }
 };
 
-export const updateLinks = (links) => {
+export const updateLinksData = (links_data) => {
     return {
         type: 'UPDATE_LINKS',
-        links
+        links_data
     }
 }

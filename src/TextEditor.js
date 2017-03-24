@@ -3,7 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { updateValue, updateParagraphs, updateLinks } from './actions';
+import { updateValue, updateParagraphs, updateLinksData } from './actions';
 import { cleanup_string, find_links } from './utils';
 import Paragraph from './Paragraph';
 
@@ -11,7 +11,10 @@ class TextEditor extends Component {
     handleChange = (evt) => {
         let formatted_string = cleanup_string(evt.target.value);
         console.log(formatted_string)
-        this.props.updateLinks(find_links(formatted_string));
+
+        const links_data = find_links(formatted_string);
+        this.props.updateLinksData(links_data);
+
         const paragraphs = formatted_string.split(/<div>/).map((value, index) => {
             return value.substr(0, value.length - 6);
         });
@@ -103,7 +106,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateValue: (value) => dispatch(updateValue(value)),
         updateParagraphs: (paragraphs) => dispatch(updateParagraphs(paragraphs)),
-        updateLinks: (links) => dispatch(updateLinks(links))
+        updateLinksData: (links_data) => dispatch(updateLinksData(links_data))
     }
 };
 

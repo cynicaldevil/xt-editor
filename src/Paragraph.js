@@ -43,7 +43,7 @@ class Paragraph extends Component {
                     padding: 1,
                     margin: 1,
                     opacity: isOver ? 0.5 : 1,
-                    backgroundColor: '#505050'}} />));
+                    backgroundColor: '#848484'}} />));
     }
 }
 

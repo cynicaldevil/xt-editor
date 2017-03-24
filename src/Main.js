@@ -65,6 +65,7 @@ class Main extends Component {
                 <div style={styles.sub}>
                     <h1 style={styles.heading}>xt-editor</h1>
                     <TextEditor />
+                    {this.props.error ? <p>Warning! Nested or unbalanced link tags!</p> : null}
                     <Button type='button'
                         onClick={this.handleClick}>Done</Button>
                     <div style={styles.links}>{links}</div>
@@ -76,7 +77,8 @@ class Main extends Component {
 
 const mapStateToProps = (store) => {
     return {
-        links: store.links
+        links: store.links_data.links,
+        error: store.links_data.error
     }
 };
 

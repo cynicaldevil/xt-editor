@@ -12,10 +12,14 @@ export const cleanup_string = (str) => {
     }
 };
 
-export const find_links = (str, ) => {
+const clean_link = (str) => {
+    return str.replace(/<div>|<\/div>|<br>/gi, '');
+};
+
+export const find_links = (str) => {
     let i;
     const opening_tag = '&lt;a&gt;';
-    const closing_tag = '&lt;/a&gt;'
+    const closing_tag = '&lt;/a&gt;';
     let compare = opening_tag;
     let start_index = -1;
     let links = [];
@@ -39,7 +43,7 @@ export const find_links = (str, ) => {
                 links = [];
                 return { links, error };
             }
-            links.push(str.substring(start_index, i));
+            links.push(clean_link(str.substring(start_index, i)));
         }
     }
 

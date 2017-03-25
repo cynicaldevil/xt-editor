@@ -10,11 +10,12 @@ import Paragraph from './Paragraph';
 class TextEditor extends Component {
     handleChange = (evt) => {
         let formatted_string = cleanup_string(evt.target.value);
-        console.log(formatted_string)
+        // console.log(formatted_string)
 
         const links_data = find_links(formatted_string);
         this.props.updateLinksData(links_data);
 
+        // store content in as array, each element representing one line
         const paragraphs = formatted_string.split(/<div>/).map((value, index) => {
             return value.substr(0, value.length - 6);
         });
@@ -23,6 +24,7 @@ class TextEditor extends Component {
     }
 
     componentDidMount = () => {
+        // focus on the editor by default
        this.textArea.htmlEl.focus();
     }
 

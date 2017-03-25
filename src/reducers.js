@@ -1,6 +1,7 @@
 const topReducer = (state = { paragraphs: [], links_data: {} }, action) => {
     switch (action.type) {
         case 'SWITCH_PARAGRAPHS' : {
+            // swap the contents of the two paragraphs
             const content1 = state.paragraphs[action.index1];
             const content2 = state.paragraphs[action.index2];
             const new_paras = state.paragraphs.map((para, index) => {

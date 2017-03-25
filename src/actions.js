@@ -1,3 +1,4 @@
+// redux actions
 export const switchParagraphs = (index1, index2) => {
     return {
         type: 'SWITCH_PARAGRAPHS',

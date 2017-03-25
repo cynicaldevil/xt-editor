@@ -12,10 +12,12 @@ export const cleanup_string = (str) => {
     }
 };
 
+// strips away HTML tags
 const clean_link = (str) => {
     return str.replace(/<div>|<\/div>|<br>/gi, '');
 };
 
+// function to scan editor content for link tags and extract links
 export const find_links = (str) => {
     let i;
     const opening_tag = '&lt;a&gt;';
@@ -23,6 +25,7 @@ export const find_links = (str) => {
     let compare = opening_tag;
     let start_index = -1;
     let links = [];
+    // check for nested tags; shows Warning
     let nesting_level = 0;
     let error = false;
 
@@ -35,6 +38,7 @@ export const find_links = (str) => {
                 links = [];
                 return { links, error };
             }
+            // store the position where the link starts from
             start_index = i + compare.length;
         } else if(str.substring(i, i + closing_tag.length) === closing_tag) {
             nesting_level--;

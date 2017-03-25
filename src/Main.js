@@ -78,6 +78,7 @@ class ClipboardButton extends Component {
               .replace(/&lt;/gi, '<');
     };
 
+    // copies text in editor to clipboard
     handleClick = () => {
         let textArea = document.createElement('textarea');
         textArea.value = this.format_string(this.props.content);

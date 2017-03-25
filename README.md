@@ -1,6 +1,8 @@
 # xt-editor
 Text editor/notepad for quick notes. Drag and drop lines/paragraphs for easier editing.
 
+View demo at: [https://cynicaldevil.github.io/xt-editor/](https://cynicaldevil.github.io/xt-editor/)
+
 ![preview](./public/xt-editor.png)
 
 ## Build

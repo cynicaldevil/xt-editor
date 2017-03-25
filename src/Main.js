@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import TextEditor from './TextEditor';
 import clipboard from '../public/clipboard-text.png';
-import help_circle from '../public/help-circle.png';
+import info from '../public/information.png';
 
 class Main extends Component {
     constructor(props) {
@@ -106,7 +106,7 @@ class Main extends Component {
                             <button type='button' style={{
                                                     ...styles.clipboard,
                                                     border: '0px'}}>
-                                <img alt='help_circle' src={help_circle} />
+                                <img alt='info' src={info} />
                             </button>
                             <button type='button' style={styles.clipboard}>
                                 <img alt='clipboard' src={clipboard} />
